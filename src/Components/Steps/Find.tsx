@@ -96,7 +96,7 @@ const StepFind = (props: {
           paddingRight: "20px",
         }}>
         <img
-          alt='AcademiaOS'
+          alt='SciMind'
           src={logo}
           style={{
             width: "30px",
@@ -105,9 +105,10 @@ const StepFind = (props: {
             marginTop: "-30px",
           }}
         />
-        <Typography.Title>AcademiaOS</Typography.Title>
+        <Typography.Title>SciMind</Typography.Title>
         <p style={{ marginTop: "-10px" }}>
           <Tag>Open Source</Tag> <Tag>OpenAI-Powered</Tag>
+          <Tag>Gemini-Powered</Tag>
         </p>
       </div>
       <Row>
@@ -223,18 +224,17 @@ const StepFind = (props: {
       </Row>
       <p>
         <a
-          href='https://arxiv.org/abs/2403.08844'
+          href='mailto:info@baggai.com'
           target='_blank'
           rel='noopener noreferrer'>
-          Read our paper
+          Contact us
         </a>
       </p>
       <p>
-        To cite AcademiaOS, please use the following format: <br />
+        To cite SciMind, please use the following format: <br />
         <code>
-          Übellacker Thomas. (2023). AcademiaOS: Automating Grounded Theory
-          Development in Qualitative Research with Large Language Models.
-          https://arxiv.org/abs/2403.08844
+          BAGG AI Ltd, Msc Hakkı Halil BABACAN. (2024). SciMind: Intelligent 
+          Academic Information Retrieval and Reasoning Platform. info@baggai.com
         </code>
       </p>
       {/* Tour Guide */}

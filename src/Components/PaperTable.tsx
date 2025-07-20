@@ -18,7 +18,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons"
 import { useEffect, useState } from "react"
-import { OpenAIService } from "../Services/OpenAIService"
+import { AIService } from "../Services/AIService"
 import { CustomColumn } from "./CustomColumn"
 import { AcademicPaper } from "../Types/AcademicPaper"
 import { asyncMap } from "../Helpers/asyncMap"
@@ -157,7 +157,7 @@ export const PaperTable = (props: {
             newPapers = await asyncMap(newPapers, async (paper) => {
               const newPaper = { ...paper } as AcademicPaper
               if (newPaper[value]) return newPaper
-              newPaper[value] = await OpenAIService.getDetailAboutPaper(
+              newPaper[value] = await AIService.getDetailAboutPaper(
                 newPaper,
                 value
               )

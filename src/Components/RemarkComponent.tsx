@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { AutoComplete, Input } from "antd"
-import { OpenAIService } from "../Services/OpenAIService"
+import { AIService } from "../Services/AIService"
 import { ModelData } from "../Types/ModelData"
 import { AcademicPaper } from "../Types/AcademicPaper"
 import { LoadingOutlined } from "@ant-design/icons"
@@ -17,7 +17,7 @@ export const RemarkComponent = (props: {
   useEffect(() => {
     const fetchQuestions = async () => {
       setLoading(true)
-      const questions = await OpenAIService.findTentativeResearchQuestions(
+      const questions = await AIService.findTentativeResearchQuestions(
         props?.papers
       )
       setResearchQuestions(questions)

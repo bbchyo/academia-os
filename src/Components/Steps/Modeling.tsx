@@ -12,7 +12,7 @@ import { AcademicPaper } from "../../Types/AcademicPaper"
 import { PaperTable } from "../PaperTable"
 import { useEffect, useState } from "react"
 import { asyncMap } from "../../Helpers/asyncMap"
-import { OpenAIService } from "../../Services/OpenAIService"
+import { AIService } from "../../Services/AIService"
 import Mermaid from "../Charts/Mermaid"
 import { GioiaCoding } from "../Charts/GioiaCoding"
 import { LoadingOutlined } from "@ant-design/icons"
@@ -36,16 +36,16 @@ export const ModelingStep = (props: {
   )
   const loadModel = async () => {
     setConstructLoading(true)
-    const modelDescription = await OpenAIService.modelConstruction(
+    const modelDescription = await AIService.modelConstruction(
       props?.modelData,
       modelingRemarks
     )
     props.onModelDataChange({ modelDescription })
-    const modelName = await OpenAIService.extractModelName(modelDescription)
+    const modelName = await AIService.extractModelName(modelDescription)
     props.onModelDataChange({ modelName })
     setConstructLoading(false)
     setVisualizationLoading(true)
-    const visualization = await OpenAIService.modelVisualization(
+    const visualization = await AIService.modelVisualization(
       props?.modelData
     )
     setCurrent(2)
@@ -55,7 +55,7 @@ export const ModelingStep = (props: {
     setCurrent(3)
     setVisualizationLoading(false)
     setIteratingLoading(true)
-    const critique = await OpenAIService.critiqueModel(props?.modelData)
+    const critique = await AIService.critiqueModel(props?.modelData)
     props.onModelDataChange({ critique })
     setIteratingLoading(false)
   }
@@ -64,7 +64,7 @@ export const ModelingStep = (props: {
     if (props?.modelData?.aggregateDimensions) {
       setExploreLoading(true)
       const applicableTheories =
-        await OpenAIService.brainstormApplicableTheories(
+        await AIService.brainstormApplicableTheories(
           props?.modelData?.aggregateDimensions || {}
         )
       props.onModelDataChange({ applicableTheories })
@@ -72,13 +72,13 @@ export const ModelingStep = (props: {
       setExploreLoading(false)
 
       setInterrelationshipsLoading(true)
-      const tuples = await OpenAIService.conceptTuples(props.modelData)
+      const tuples = await AIService.conceptTuples(props.modelData)
       props.onModelDataChange({
         interrelationships: tuples.map((tuple) => ({ concepts: tuple })),
       })
       setCurrent(1)
       const interrelationships =
-        await OpenAIService.findRelevantParagraphsAndSummarize(
+        await AIService.findRelevantParagraphsAndSummarize(
           props.modelData,
           tuples
         )

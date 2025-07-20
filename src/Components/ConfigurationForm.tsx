@@ -9,6 +9,7 @@ import {
   Row,
   Col,
   Select,
+  Radio,
 } from "antd"
 import axios from "axios"
 
@@ -21,9 +22,14 @@ interface ConfigurationFormProps {
 const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onSubmit }) => {
   const [form] = Form.useForm<FormInstance>()
   const [showMoreOptions, setShowMoreOptions] = React.useState(false)
+  const [aiProvider, setAiProvider] = React.useState(
+    localStorage.getItem("aiProvider") || "openai"
+  )
 
   const defaultValues = {
+    aiProvider: localStorage.getItem("aiProvider") || "openai",
     openAIKey: localStorage.getItem("openAIKey"),
+    geminiKey: localStorage.getItem("geminiKey"),
     email: localStorage.getItem("email"),
     heliconeEndpoint: localStorage.getItem("heliconeEndpoint"),
     heliconeKey: localStorage.getItem("heliconeKey"),
@@ -42,11 +48,20 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onSubmit }) => {
         "modelName",
         values.modelName ?? "gpt-4-1106-preview"
       )
+      localStorage.setItem(
+        "geminiModel",
+        values.geminiModel ?? "gemini-2.5-flash"
+      )
+      localStorage.setItem("aiProvider", values.aiProvider ?? "openai")
 
       localStorage.setItem("email", values.email ?? defaultValues.email ?? "")
       localStorage.setItem(
         "openAIKey",
         values.openAIKey ?? defaultValues.openAIKey ?? ""
+      )
+      localStorage.setItem(
+        "geminiKey",
+        values.geminiKey ?? defaultValues.geminiKey ?? ""
       )
       localStorage.setItem(
         "heliconeEndpoint",
@@ -126,6 +141,18 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onSubmit }) => {
           />
         </Form.Item> */}
         <Form.Item
+          name='aiProvider'
+          extra='Choose your preferred AI provider'>
+          <Radio.Group
+            defaultValue={defaultValues.aiProvider}
+            onChange={(e) => setAiProvider(e.target.value)}>
+            <Radio.Button value='openai'>OpenAI</Radio.Button>
+            <Radio.Button value='gemini'>Google Gemini</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        
+        {aiProvider === 'openai' && (
+        <Form.Item
           //   label='OpenAI Key'
           name='openAIKey'
           extra={
@@ -144,8 +171,32 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onSubmit }) => {
             defaultValue={defaultValues.openAIKey || ""}
           />
         </Form.Item>
+        )}
+        
+        {aiProvider === 'gemini' && (
+        <Form.Item
+          name='geminiKey'
+          extra={
+            <span>
+              Get your{" "}
+              <Typography.Link
+                target='_blank'
+                href='https://aistudio.google.com/app/apikey'>
+                Google Gemini API key
+              </Typography.Link>{" "}
+              for AI functionalities, only stored in your browser.
+            </span>
+          }>
+          <Input.Password
+            placeholder='Enter your Google Gemini API key'
+            defaultValue={defaultValues.geminiKey || ""}
+          />
+        </Form.Item>
+        )}
+        
         {showMoreOptions && (
           <>
+            {aiProvider === 'openai' && (
             <Row>
               <Col span={24}>
                 <Form.Item
@@ -167,6 +218,31 @@ const ConfigurationForm: React.FC<ConfigurationFormProps> = ({ onSubmit }) => {
                 </Form.Item>
               </Col>
             </Row>
+            )}
+            
+            {aiProvider === 'gemini' && (
+            <Row>
+              <Col span={24}>
+                <Form.Item
+                  name='geminiModel'
+                  extra='Select the Google Gemini model you want to use'>
+                  <Select
+                    placeholder='Choose Gemini Model'
+                    defaultValue={
+                      localStorage.getItem("geminiModel") || "gemini-2.5-flash"
+                    }>
+                    <Select.Option value='gemini-2.5-pro'>
+                      Gemini 2.5 Pro (Most capable model)
+                    </Select.Option>
+                    <Select.Option value='gemini-2.5-flash'>
+                      Gemini 2.5 Flash (Fast and efficient)
+                    </Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+            )}
+            
             <Row gutter={12}>
               <Col span={12}>
                 <Form.Item

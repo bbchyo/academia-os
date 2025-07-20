@@ -35,7 +35,7 @@ import { renameTab, addTab } from "../Redux/actionCreators"
 import { PaperComponent } from "./Paper"
 import { RankingService } from "../Services/RankingService"
 import { PaperTable } from "./PaperTable"
-import { OpenAIService } from "../Services/OpenAIService"
+import { AIService } from "../Services/AIService"
 import ConfigurationForm from "./ConfigurationForm"
 import StreamingComponent from "./StreamingComponent"
 
@@ -167,7 +167,7 @@ const Workflow = (props: { tabKey?: string }) => {
       }`,
       content: (
         <>
-          {OpenAIService.getOpenAIKey() ? (
+          {AIService.hasValidAPIKey() ? (
             (modelData.papers || [])?.length > 0 ? (
               <PaperTable
                 onPapersChange={(papers) => {
@@ -185,8 +185,8 @@ const Workflow = (props: { tabKey?: string }) => {
           ) : (
             <Result
               status='404'
-              title='OpenAI API Key Missing'
-              subTitle='Unlock all features by adding your OpenAI API key.'
+              title='AI API Key Missing'
+              subTitle='Unlock all features by adding your AI API key (OpenAI or Google Gemini).'
               extra={
                 <ConfigurationForm
                   onSubmit={() => {
@@ -230,7 +230,7 @@ const Workflow = (props: { tabKey?: string }) => {
             title: "Literature Review",
             content: (
               <>
-                {OpenAIService.getOpenAIKey() ? (
+                {AIService.hasValidAPIKey() ? (
                   <div>
                     Literature Review
                     <StreamingComponent
@@ -252,8 +252,8 @@ const Workflow = (props: { tabKey?: string }) => {
                 ) : (
                   <Result
                     status='404'
-                    title='OpenAI API Key Missing'
-                    subTitle='Unlock all features by adding your OpenAI API key.'
+                    title='AI API Key Missing'
+                    subTitle='Unlock all features by adding your AI API key (OpenAI or Google Gemini).'
                     extra={
                       <ConfigurationForm
                         onSubmit={() => {

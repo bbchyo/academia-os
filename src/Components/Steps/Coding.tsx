@@ -3,7 +3,7 @@ import { AcademicPaper } from "../../Types/AcademicPaper"
 import { PaperTable } from "../PaperTable"
 import { useEffect, useState } from "react"
 import { asyncMap } from "../../Helpers/asyncMap"
-import { OpenAIService } from "../../Services/OpenAIService"
+import { AIService } from "../../Services/AIService"
 import Mermaid from "../Charts/Mermaid"
 import { GioiaCoding } from "../Charts/GioiaCoding"
 import { LoadingOutlined } from "@ant-design/icons"
@@ -34,7 +34,7 @@ export const CodingStep = (props: {
     newPapers = await asyncMap(newPapers, async (paper, index) => {
       const newPaper = { ...paper } as AcademicPaper
       if (newPaper["Initial Codes"]) return newPaper
-      newPaper["Initial Codes"] = await OpenAIService.initialCodingOfPaper(
+      newPaper["Initial Codes"] = await AIService.initialCodingOfPaper(
         newPaper,
         props.modelData?.remarks
       )
@@ -63,7 +63,7 @@ export const CodingStep = (props: {
 
   const loadFocusCodes = async (codes: string[]) => {
     setSecondOrderLoading(true)
-    const secondOrderCodes = await OpenAIService.secondOrderCoding(codes)
+    const secondOrderCodes = await AIService.secondOrderCoding(codes)
     setFocusCodes(secondOrderCodes)
     setSecondOrderLoading(false)
     setCurrent(1)
@@ -74,7 +74,7 @@ export const CodingStep = (props: {
     [code: string]: string[]
   }) => {
     setAggregateLoading(true)
-    const aggregateDimensions = await OpenAIService.aggregateDimensions(codes)
+    const aggregateDimensions = await AIService.aggregateDimensions(codes)
     setAggregateDimensions(aggregateDimensions)
     setAggregateLoading(false)
     setCurrent(2)

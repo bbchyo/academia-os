@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Typography, Space } from "antd"
-import { OpenAIService } from "../Services/OpenAIService"
+import { AIService } from "../Services/AIService"
 import { AcademicPaper } from "../Types/AcademicPaper"
 
 export const CustomColumn = (props: {
@@ -25,7 +25,7 @@ export const CustomColumn = (props: {
       return
     }
 
-    OpenAIService.getDetailAboutPaper(props?.record, props?.detail)
+    AIService.getDetailAboutPaper(props?.record, props?.detail)
       .then((result) => {
         if (isMounted) {
           setDetail(result)

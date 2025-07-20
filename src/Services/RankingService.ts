@@ -6,7 +6,7 @@ import { asyncForEach } from "../Helpers/asyncForEach"
 import { MemoryVectorStore } from "langchain/vectorstores/memory"
 import { OpenAIEmbeddings } from "langchain/embeddings/openai"
 import { uniqBy } from "../Helpers/uniqBy"
-import { OpenAIService } from "./OpenAIService"
+import { AIService } from "./AIService"
 import { AcademicPaper } from "../Types/AcademicPaper"
 
 export class RankingService {
@@ -35,9 +35,16 @@ export class RankingService {
       // Create embeddings
       const embeddings = new OpenAIEmbeddings(
         {
-          openAIApiKey: OpenAIService.getOpenAIKey(),
+          openAIApiKey: localStorage.getItem("openAIKey") || "",
         },
-        OpenAIService.openAIConfiguration()
+        {
+          basePath: localStorage.getItem("heliconeEndpoint") || undefined,
+          baseOptions: {
+            headers: {
+              "Helicone-Auth": `Bearer ${localStorage.getItem("heliconeKey")}`,
+            },
+          },
+        }
       )
       // Create the Voy store.
       const store = new MemoryVectorStore(embeddings)
